@@ -6,6 +6,10 @@ else
   root=/ql
 fi
 
+fix() {
+  sed -i 's/\/log/\/log$/' $root/jbot/bot/sendfile.py
+}
+
 install() {
   echo "安装user监控！"
   echo ""
@@ -53,6 +57,7 @@ main() {
     esac
 }
 
+fix
 main
 cd $root
 if [ -d "/jd" ]
