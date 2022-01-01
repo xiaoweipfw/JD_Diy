@@ -19,16 +19,13 @@ else:
     proxy = (BOT['proxy_type'], BOT['proxy_add'], BOT['proxy_port'])
 # 开启tg对话
 if PROXY_START and BOT.get('noretry') and BOT['noretry']:
-    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType,
-                          proxy=proxy)
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy)
 elif PROXY_START:
-    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType,
-                          proxy=proxy, connection_retries=None)
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection=connectionType, proxy=proxy, connection_retries=None)
 elif BOT.get('noretry') and BOT['noretry']:
     user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH)
 else:
-    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH,
-                          connection_retries=None)
+    user = TelegramClient(f'{CONFIG_DIR}/user', API_ID, API_HASH, connection_retries=None)
 
 
 def creat_qr(text):
@@ -87,7 +84,7 @@ async def user_login(event):
             await user.sign_in(phone.raw_text, code.raw_text.replace('code', ''))
         await jdbot.send_message(chat_id, '恭喜您已登录成功,请修改 /set 将开启user 改为True 并重启机器人 /reboot')
     except asyncio.exceptions.TimeoutError:
-        msg = await jdbot.edit_message(msg, '登录已超时，对话已停止')
+        await jdbot.edit_message(msg, '登录已超时，对话已停止')
     except Exception as e:
         await jdbot.send_message(chat_id, '登录失败\n 再重新登录\n' + str(e))
     finally:
