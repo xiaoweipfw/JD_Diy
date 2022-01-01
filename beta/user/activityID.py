@@ -30,7 +30,7 @@ async def activity(event):
             name = '组队瓜分京豆'
             from ..diy.diy import smiek_jd_zdjr
             await smiek_jd_zdjr()
-            cmd = f'{TASK_CMD} /jd/own/smile_zdjr.js now'
+            cmd = f'{TASK_CMD} /jd/own/smiek_jd_zdjr.js now'
         else:
             return
         messages = event.message.raw_text.split("\n")
