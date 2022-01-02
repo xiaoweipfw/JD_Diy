@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# 从whyour 大佬的bot.sh 与E大的jup.sh 拼凑出来的
-## 导入通用变量与函数
+
 if [ ! -d "/ql" ];then
   dir_root=/jd
 else
   dir_root=/ql
 fi
 
-dir_bot=$dir_root/jbot
+dir_jbot=$dir_root/jbot
 dir_repo=$dir_root/repo
-file_bot_setting_user=$dir_root/config/bot.json
+file_bot=$dir_root/config/bot.json
+file_botset=$dir_root/config/botset.json
+file_diybotset=$dir_root/config/diybotset.json
 url="https://github.com/chiupam/JD_Diy.git"
-repo_path="${dir_repo}/diybot"
+repo_path=$dir_repo/diybot
 
 git_pull() {
     local dir_current=$(pwd)
@@ -39,14 +40,14 @@ git_clone() {
 
 notify () {
     local message="$(echo -e $1)"
-    local bot_token=$(cat $file_bot_setting_user | jq -r .bot_token)
-    local user_id=$(cat $file_bot_setting_user | jq .user_id)
-    local proxy=$(cat $file_bot_setting_user | jq .proxy)
-    local proxy_type=$(cat $file_bot_setting_user | jq -r .proxy_type)
-    local proxy_add=$(cat $file_bot_setting_user | jq -r .proxy_add)
-    local proxy_port=$(cat $file_bot_setting_user | jq .proxy_port)
-    local proxy_user=$(cat $file_bot_setting_user | jq -r .proxy_user)
-    local proxy_password=$(cat $file_bot_setting_user | jq -r .proxy_password)
+    local bot_token=$(cat $file_bot | jq -r .bot_token)
+    local user_id=$(cat $file_bot | jq .user_id)
+    local proxy=$(cat $file_bot | jq .proxy)
+    local proxy_type=$(cat $file_bot | jq -r .proxy_type)
+    local proxy_add=$(cat $file_bot | jq -r .proxy_add)
+    local proxy_port=$(cat $file_bot | jq .proxy_port)
+    local proxy_user=$(cat $file_bot | jq -r .proxy_user)
+    local proxy_password=$(cat $file_bot | jq -r .proxy_password)
     local api_url="https://api.telegram.org/bot${bot_token}/sendMessage"
     local cmd_proxy_user cmd_proxy
     if [[ $proxy_user != *无则不用* ]] && [[ $proxy_password != *无则不用* ]]; then
@@ -71,37 +72,37 @@ env() {
 bot() {
   echo -e "2、下载bot所需文件...\n"
   if [ -d ${repo_path}/.git ]; then
-      jbot_md5sum_old=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
+      jbot_md5sum_old=$(cd $dir_jbot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
       git_pull ${repo_path}
-      cp -rf $repo_path/beta/* $dir_bot
-      jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
+      cp -rf $repo_path/beta/* $dir_jbot
+      jbot_md5sum_new=$(cd $dir_jbot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
       if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
           notify "检测到BOT程序有更新，BOT将重启。"
       fi
   else
     git_clone ${url} ${repo_path} "main"
-      cp -rf $repo_path/beta/* $dir_bot
+      cp -rf $repo_path/beta/* $dir_jbot
   fi
   echo -e "\nbot文件下载成功...\n"
 }
 
 init() {
-  if [[ ! -f "$dir_root/config/bot.json" ]]; then
+  if [[ ! -f $file_bot ]]; then
     cp -f $repo_path/config/bot.json $dir_root/config
   fi
-  if [[ ! -f "$dir_root/config/botset.json" ]]; then
+  if [[ ! -f $file_botset ]]; then
     cp -f $repo_path/config/botset.json $dir_root/config
   else
-    sed -i 's/user": "True"/user": "False"/' $dir_root/config/botset.json
+    sed -i 's/user": "True"/user": "False"/' $file_botset
   fi
-  if [[ ! -f "$dir_root/config/diybotset.json" ]]; then
+  if [[ ! -f $file_diybotset ]]; then
     cp -f $repo_path/config/diybotset.json $dir_root/config
   fi
 }
 
 env_bot() {
   echo -e "3、安装python3依赖...\n"
-  cd $dir_bot
+  cd $dir_jbot
   pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/
   pip3 --default-timeout=100 install -r requirements.txt --no-cache-dir
   echo -e "\npython3依赖安装成功...\n"
@@ -110,23 +111,22 @@ env_bot() {
 start() {
   echo -e "4、启动bot程序...\n"
   cd $dir_root
-  if [ ! -d "$root/log/bot" ]; then
+  if [ ! -d $root/log/bot ]; then
     mkdir $dir_root/log/bot
   fi
   if [[ -z $(grep -E "123456789" $dir_root/config/bot.json) ]]; then
     if [ -d "/ql" ]; then
       ps -ef | grep "python3 -m jbot" | grep -v grep | awk '{print $1}' | xargs kill -9 2>/dev/null
       nohup python3 -m jbot >$dir_root/log/bot/bot.log 2>&1 &
-      echo -e "bot启动成功...\n"
     else
-      cd $dir_bot
+      cd $dir_jbot
       pm2 start ecosystem.config.js
       cd $dir_root
       pm2 restart jbot
-      echo -e "bot启动成功...\n"
     fi
+    echo -e "bot启动成功...\n"
   else
-    echo -e  "配置 $dir_root/config/bot.json 后再次运行本程序即可启动机器人"
+    echo -e "配置 $dir_root/config/bot.json 后再次运行本程序即可启动机器人"
   fi
 }
 
