@@ -1,6 +1,9 @@
-version = 'version :1.0.1'
+version = 'version :1.0.2'
 botlog = '''
-**2022年1月2日**
-整合SuMaiKaDe大佬的[bot](https://github.com/SuMaiKaDe/bot.git)仓库，直接部署自定义机器人即可。
-可用的指令通过/start或者/help进行查看。
+**2022年1月3日**
+整合了自走人形bot的re、id、del、da true四个功能。
+对着一条消息回复re可以转发一次到当前聊天群组。
+对着一条消息回复id可以查看消息发送者的个人信息。
+在任意地方发送del可以删除10条消息，也可以del 3删除3条消息。
+在任意地方发送dat可以删除所有你能删除的消息（管理员慎用）。
 '''
