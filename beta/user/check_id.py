@@ -28,10 +28,9 @@ async def check_id(event):
             except TypeError:
                 pass
             if message.sender.username:
-                text += f"\n用户名：`@{message.sender.username}`"
+                text += f"\n用户名：@{message.sender.username}"
         except AttributeError:
             pass
         await event.edit(text)
     else:
         await event.delete()
-        
