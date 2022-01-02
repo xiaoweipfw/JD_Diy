@@ -55,6 +55,7 @@ def start():
     botset = botset.replace('user": "False"', 'user": "True"')
     with open(file, "w", encoding="utf-8") as f2:
         f2.write(botset)
+    restart()
 
 
 def close():
@@ -64,6 +65,7 @@ def close():
     botset = botset.replace('user": "True"', 'user": "False"')
     with open(file, "w", encoding="utf-8") as f2:
         f2.write(botset)
+    restart()
 
 
 def state():
@@ -83,13 +85,13 @@ async def user_login(event):
         sender = event.sender_id
         session = "/jd/config/user.session" if V4 else "/ql/config/user.session"
         async with jdbot.conversation(sender, timeout=120) as conv:
-            msg = await conv.send_message("你已经拥有了一份user.session，请做出你的选择")
+            msg = await conv.send_message("请做出你的选择")
             buttons = [
-                Button.inline("重新登录", data="relogin"),
+                Button.inline("重新登录", data="relogin") if os.path.exists(session) else Button.inline("我要登录", data="login"),
                 Button.inline("关闭user", data="close") if state() else Button.inline("开启user", data="start"),
                 Button.inline('取消会话', data='cancel')
             ]
-            msg = await jdbot.edit_message(msg, '你已经拥有了一份user.session，请做出你的选择：', buttons=split_list(buttons, row))
+            msg = await jdbot.edit_message(msg, '请做出你的选择：', buttons=split_list(buttons, row))
             convdata = await conv.wait_event(press_event(sender))
             res = bytes.decode(convdata.data)
             if res == 'cancel':
@@ -98,11 +100,9 @@ async def user_login(event):
             elif res == 'close':
                 await jdbot.edit_message(msg, "关闭成功，准备重启机器人！")
                 close()
-                restart()
             elif res == 'start':
                 await jdbot.edit_message(msg, "开启成功，请确保session可用，否则请进入容器修改botset.json并删除user.session！\n现准备重启机器人！")
                 start()
-                restart()
             else:
                 await jdbot.delete_messages(chat_id, msg)
                 login = True
@@ -117,7 +117,6 @@ async def user_login(event):
                 await user.sign_in(phone.raw_text, code.raw_text.replace('code', ''))
                 await jdbot.send_message(chat_id, '恭喜您已登录成功！\n自动重启中！')
             start()
-            restart()
     except asyncio.exceptions.TimeoutError:
         await jdbot.edit_message(msg, '登录已超时，对话已停止')
     except Exception as e:
