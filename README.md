@@ -13,15 +13,14 @@
 - [简介](#简介)
 - [已有功能](#已有功能)
   - [基础功能](#基础功能)
-  - [可拓展功能](#可拓展功能)
-  - [user.py功能](#userpy功能)
+  - [user功能](#user功能)
 - [使用方式](#使用方式)
   - [部署自定义机器人](#部署自定义机器人)
-  - [部署user.py监控机器人](#部署userpy监控机器人)
+  - [开启user监控机器人](#开启user监控机器人)
 - [前瞻计划](#前瞻计划)
   - [用户要求](#用户要求)
   - [部署方法](#部署方法)
-- [常用命令](#常用命令)
+- [已知问题](#已知问题)
 # 仓库目录说明
 ```text
 JD_Diy/                     # JD_Diy 仓库
@@ -53,36 +52,37 @@ JD_Diy/                     # JD_Diy 仓库
 随着 v4-bot 启动而启动的自定义机器人，其中大部分功能亦支持青龙用户。
 ## 已有功能
 ### 基础功能
-- [x] 发送 `/start` 指令可开启自定义机器人
+- [x] 发送 `/start` 指令查看自定义机器人说明
 - [x] 发送 `/restart` 指令可重启机器人
 - [x] 发送 `/help` 指令可获取快捷命令
-- [x] 发送 `/install` 指令可拓展功能
-- [x] 发送 `/uninstall` 指令可卸载功能
-- [x] 发送 `/list` 指令列出已有功能
-### 可拓展功能
 - [x] 发送 `/upbot` 升级自定义机器人
 - [x] 发送 `/checkcookie` 检测过期情况
 - [x] 发送 `/export` 修改环境变量
 - [x] 发送 `/blockcookie` 进行屏蔽操作
 - [x] 发送 `pin=xxx;wskey=xxx;` 快速添加 `wskey`
-- [x] 下载 `.js` `.sh` 的 `raw` 文件
+- [x] 发送链接直接下载 `.js` `.sh` 的 `raw` 文件
 - [x] 添加以 `.git` 结尾的仓库链接可添加仓库
 - [x] 发送 `变量名="变量值"` 的格式消息可快捷添加环境变量
-### user.py功能
-- [x] 监控龙王庙频道，监控并定时执行红包雨
+### user功能
+- [x] 发送 `/user` 开启或管理user监控
 - [x] 关注店铺有礼自动执行（需自行配置频道ID）
 - [x] 自动替换某些环境变量（需自行配置频道ID）
+- [x] ~~监控龙王庙频道，监控并定时执行红包雨~~
 - [x] ~~监控动物园频道，自动下载开卡脚本并选择执行~~
+- [ ] 自动参加抽奖机器人发送的抽奖活动
+- [ ] 自动下载频道/某人的特定文件
+- [ ] 监控群组聊天记录（仅文字）
 # 使用方法
 ## 部署自定义机器人
 进入容器中执行以下命令即可，此命令也可以在机器人中使用（即使用 /cmd 指令）
 ```shell
-if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/diybot.sh ]; then rm -f $root/diybot.sh; fi; cd $root; wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/diybot.sh; bash diybot.sh
+if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/diybot.sh ]; then rm -f $root/diybot.sh; fi; cd $root
+wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot.sh
+bash bot.sh
 ```
-## 部署[user.py](https://github.com/chiupam/JD_Diy/blob/main/jbot/user.py)监控机器人
-首先进入容器中执行以下命令，然后按提示操作即可（此命令禁止在机器人中使用）
-```shell
-if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/user.sh ]; then rm -f $root/user.sh; fi; cd $root; wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/user.sh; bash user.sh
+## 开启user监控机器人
+```text
+在部署自定义机器人成功后使用 /user 指令，选择重新登录即可。
 ```
 # 前瞻计划
 测试版机器人的部署方法，功能不稳定，不建议尝试。
@@ -92,26 +92,12 @@ if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/user.sh ]; then
 - 甚至可以 Pr 部分功能
 ## 部署方法
 ```shell
-if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/diybot_beta.sh ]; then rm -f $root/diybot_beta.sh; fi; cd $root; wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/diybot_beta.sh; bash diybot_beta.sh
+if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/diybot.sh ]; then rm -f $root/diybot.sh; fi; cd $root
+wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot_beta.sh
+bash bot_beta.sh
 ```
-# 常用命令
-1. 升级原机器人程序
-```shell
-if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/bot.sh ]; then rm -f $root/bot.sh; fi; cd $root; wget https://raw.githubusercontent.com/SuMaiKaDe/bot/main/config/bot.sh; bash bot.sh
-```
-2. 重启程序
-```shell
-if [ -d '/jd' ]; then cd /jd/jbot; pm2 start ecosystem.config.js; cd /jd; pm2 restart jbot; else ps -ef | grep 'python3 -m jbot' | grep -v grep | awk '{print $1}' | xargs kill -9 2>/dev/null; nohup python3 -m jbot >/ql/log/bot/bot.log 2>&1 & fi 
-```
-3. 启动程序
-```shell
-if [ -d '/jd' ]; then cd /jd/jbot; pm2 start ecosystem.config.js; cd /jd; pm2 start jbot; else nohup python3 -m jbot >/ql/log/bot/bot.log 2>&1 & fi 
-```
-4. 停止程序
-```shell
-if [ -d '/jd' ]; then cd /jd/jbot; pm2 start ecosystem.config.js; cd /jd; pm2 stop jbot; else ps -ef | grep 'python3 -m jbot' | grep -v grep | awk '{print $1}' | xargs kill -9 2>/dev/null; fi 
-```
-5. 卸载diy程序
-```shell
-if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; rm -f $root/jbot/diy/*.py
+# 已知问题
+1. 重装自定义机器人后 /start 没有反应
+```text
+进入容器根目录后使用命令 rm -f bot.session bot.session-journal 后再次部署
 ```
