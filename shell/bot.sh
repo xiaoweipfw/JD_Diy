@@ -97,6 +97,9 @@ init() {
   fi
   if [[ ! -f $file_diybotset ]]; then
     cp -f $repo_path/config/diybotset.json $dir_root/config
+  else
+    sed -i 's/key_2/listenerId/' $file_diybotset
+    sed -i 's/value_1/-100123456789/' $file_diybotset
   fi
 }
 
