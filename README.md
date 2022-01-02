@@ -85,7 +85,7 @@ JD_Diy/                     # JD_Diy 仓库
 进入容器中执行以下命令即可，此命令也可以在机器人中使用（即使用 /cmd 指令）
 ```shell
 if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/diybot.sh ]; then rm -f $root/diybot.sh; fi; cd $root
-wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot.sh
+wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot.sh -O $root/bot.sh
 bash bot.sh
 ```
 ## 开启user监控机器人
@@ -103,7 +103,7 @@ A wait of 9050 seconds is required.（需要等待 9050 秒。）
 ## 部署方法
 ```shell
 if [ -d "/jd" ]; then root=/jd; else root=/ql; fi; if [ -f $root/diybot.sh ]; then rm -f $root/diybot.sh; fi; cd $root
-wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot_beta.sh
+wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot_beta.sh -O $root/bot_beta.sh
 bash bot_beta.sh
 ```
 # 已知问题
