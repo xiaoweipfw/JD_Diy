@@ -87,10 +87,15 @@ bot() {
 
 init() {
   if [[ ! -f "$dir_root/config/bot.json" ]]; then
-    cp -f "$repo_path/config/bot.json" "$dir_root/config"
+    cp -f $repo_path/config/bot.json $dir_root/config
+  fi
+  if [[ ! -f "$dir_root/config/botset.json" ]]; then
+    cp -f $repo_path/config/botset.json $dir_root/config
+  else
+    sed -i 's/user": "True"/user": "False"/' $dir_root/config/botset.json
   fi
   if [[ ! -f "$dir_root/config/diybotset.json" ]]; then
-    cp -f "$repo_path/config/diybotset.json" "$dir_root/config"
+    cp -f $repo_path/config/diybotset.json $dir_root/config
   fi
 }
 
