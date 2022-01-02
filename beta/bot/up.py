@@ -18,7 +18,7 @@ async def myupbot(event):
             furl = f'{str(BOT_SET["下载代理"])}/{furl}'
         resp = requests.get(furl).text
         if not resp:
-            await jdbot.edit_message(msg, "【diy正式版】\n\n下载shell文件失败\n请稍后重试，或尝试关闭代理重启")
+            await jdbot.edit_message(msg, "【diy前瞻计划】\n\n下载shell文件失败\n请稍后重试，或尝试关闭代理重启")
             return
         cmdtext = f"bash {JD_DIR}/bot_beta.sh"
         fpath = f"{JD_DIR}/bot_beta.sh"
