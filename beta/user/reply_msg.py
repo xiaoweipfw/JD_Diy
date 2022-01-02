@@ -3,7 +3,7 @@ from telethon import events
 from .login import user
 
 
-@user.on(events.NewMessage(pattern=r'^re[ 0-9]*$', outgoing=True))
+@user.on(events.NewMessage(pattern=r'^re?[ 0-9]*$', outgoing=True))
 async def mycp(event):
     num = event.raw_text.split(' ')
     if isinstance(num, list) and len(num) == 2:
