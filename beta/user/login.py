@@ -82,12 +82,11 @@ async def user_login(event):
         login = False
         sender = event.sender_id
         session = "/jd/config/user.session" if V4 else "/ql/config/user.session"
-        button = Button.inline("关闭user", data="close") if state() else Button.inline("开启user", data="start")
         async with jdbot.conversation(sender, timeout=120) as conv:
             msg = await conv.send_message("你已经拥有了一份user.session，请做出你的选择")
             buttons = [
-                button,
                 Button.inline("重新登录", data="relogin"),
+                Button.inline("关闭user", data="close") if state() else Button.inline("开启user", data="start"),
                 Button.inline('取消会话', data='cancel')
             ]
             msg = await jdbot.edit_message(msg, '你已经拥有了一份user.session，请做出你的选择：', buttons=split_list(buttons, row))
@@ -101,11 +100,11 @@ async def user_login(event):
                 close()
                 restart()
             elif res == 'start':
-                await jdbot.edit_message(msg, "开启成功，请确保session可用，现准备重启机器人！")
+                await jdbot.edit_message(msg, "开启成功，请确保session可用，否则请进入容器修改botset.json并删除user.session！\n现准备重启机器人！")
                 start()
                 restart()
             else:
-                await jdbot.edit_message(msg, "准备登陆程序！")
+                await jdbot.delete_messages(chat_id, msg)
                 login = True
         if login:
             await user.connect()
