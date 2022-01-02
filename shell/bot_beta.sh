@@ -73,14 +73,14 @@ bot() {
   if [ -d ${repo_path}/.git ]; then
       jbot_md5sum_old=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
       git_pull ${repo_path}
-      cp -rf "$repo_path/jbot" $dir_root
+      cp -rf "$repo_path/beta" $dir_root
       jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
       if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
           notify "检测到BOT程序有更新，BOT将重启。"
       fi
   else
     git_clone ${url} ${repo_path} "main"
-    cp -rf "$repo_path/jbot" $dir_root
+    cp -rf "$repo_path/beta" $dir_root
   fi
   echo -e "\nbot文件下载成功...\n"
 }
