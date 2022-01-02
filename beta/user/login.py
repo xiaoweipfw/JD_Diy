@@ -112,7 +112,7 @@ async def user_login(event):
                 msg = await conv.send_message('请输入手机号：\n例如：+8618888888888')
                 phone = await conv.get_response()
                 await user.send_code_request(phone.raw_text, force_sms=True)
-                msg = await conv.send_message('请输入手机验证码:\n例如`12345`')
+                msg = await conv.send_message('请输入手机验证码:\n例如`code12345code`\n两边的**code**必须有！')
                 code = await conv.get_response()
                 await user.sign_in(phone.raw_text, code.raw_text.replace('code', ''))
                 await jdbot.send_message(chat_id, '恭喜您已登录成功！\n自动重启中！')
