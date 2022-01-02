@@ -73,14 +73,14 @@ bot() {
   if [ -d ${repo_path}/.git ]; then
       jbot_md5sum_old=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
       git_pull ${repo_path}
-      cp -rf "$repo_path/beta" $dir_root
+      cp -rf $repo_path/beta/* $dir_bot
       jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
       if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
           notify "检测到BOT程序有更新，BOT将重启。"
       fi
   else
     git_clone ${url} ${repo_path} "main"
-    cp -rf "$repo_path/beta" $dir_root
+      cp -rf $repo_path/beta/* $dir_bot
   fi
   echo -e "\nbot文件下载成功...\n"
 }
@@ -105,7 +105,7 @@ env_bot() {
 start() {
   echo -e "4、启动bot程序...\n"
   cd $dir_root
-  if [ ! -d "/ql/log/bot" ]; then
+  if [ ! -d "$root/log/bot" ]; then
     mkdir $dir_root/log/bot
   fi
   if [[ -z $(grep -E "123456789" $dir_root/config/bot.json) ]]; then
