@@ -160,10 +160,9 @@ def getbean(i, cookie, url):
         "Accept-Encoding": "gzip,compress,br,deflate",
         "Cookie": cookie,
     }
-    result, o = '', '\n\t\t└'
+    result, o = '', '-->'
     try:
-        r = requests.get(url=url, headers=headers)
-        res = r.json()
+        res = requests.get(url=url, headers=headers).json()
         if res['code'] == '0':
             followDesc = res['result']['followDesc']
             if followDesc.find('成功') != -1:
@@ -171,7 +170,7 @@ def getbean(i, cookie, url):
                     for n in range(len(res['result']['alreadyReceivedGifts'])):
                         redWord = res['result']['alreadyReceivedGifts'][n]['redWord']
                         rearWord = res['result']['alreadyReceivedGifts'][n]['rearWord']
-                        result += f"{o}领取成功，获得{redWord}{rearWord}"
+                        result += f"{o}获得{redWord}{rearWord}"
                 except:
                     giftsToast = res['result']['giftsToast'].split(' \n ')[1]
                     result = f"{o}{giftsToast}"
@@ -181,10 +180,10 @@ def getbean(i, cookie, url):
             result = f"{o}Cookie 可能已经过期"
     except Exception as e:
         if str(e).find('(char 0)') != -1:
-            result = f"{o}访问发生错误：无法解析数据包"
+            result = f"{o}无法解析数据包"
         else:
             result = f"{o}访问发生错误：{e}"
-    return f"\n京东账号{i}{result}\n"
+    return f"\n账号{str(i).zfill(2)}{result}"
 
 
 # user.py shoptoken() 调用
