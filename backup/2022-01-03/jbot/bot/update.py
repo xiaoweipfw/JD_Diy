@@ -1,4 +1,4 @@
-version = 'version :1.0.2 beta'
+version = 'version :1.0.2'
 botlog = '''
 **2022年1月3日**
 整合了自走人形bot的re、id、del、da true四个功能。
