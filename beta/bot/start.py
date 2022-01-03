@@ -9,7 +9,7 @@ async def bot_start(event):
     """接收/start命令后执行程序"""
     if V4:
         msg = '''使用方法如下：
-    /help 获取命令，可直接发送至botfather。
+    /help 获取命令，可直接发送至 @BotFather 。
     /start 开始使用本程序。
     /restart 重启本程序。
     e 查看运行日志。
