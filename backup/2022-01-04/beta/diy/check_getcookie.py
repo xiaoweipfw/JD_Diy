@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -7,7 +6,7 @@ import sys
 
 from telethon import events
 
-from .. import chat_id, jdbot, logger, BOT_DIR, CONFIG_DIR, ch_name, BOT_SET
+from JD_Diy.beta import chat_id, jdbot, logger, BOT_DIR, CONFIG_DIR, ch_name, BOT_SET
 
 
 @jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/getcookie$'))
