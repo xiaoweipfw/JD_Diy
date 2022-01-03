@@ -11,21 +11,20 @@ from .. import chat_id, jdbot, logger, JD_DIR, BOT_SET
 
 @jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^/upbot$'))
 async def myupbot(event):
-    msg = await jdbot.send_message(chat_id, "【diy正式版】\n\n准备更新程序")
+    msg = await jdbot.send_message(chat_id, "【前瞻计划】\n\n准备更新程序")
     try:
-        furl = "https://raw.githubusercontent.com/chiupam/JD_Diy/master/shell/bot_beta.sh"
-        if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in furl:
-            furl = f'{str(BOT_SET["下载代理"])}/{furl}'
-        resp = requests.get(furl).text
-        if not resp:
-            await jdbot.edit_message(msg, "【diy前瞻计划】\n\n下载shell文件失败\n请稍后重试，或尝试关闭代理重启")
+        url = "https://raw.githubusercontent.com/chiupam/JD_Diy/master/shell/bot_beta.sh"
+        if '下载代理' in BOT_SET.keys() and str(BOT_SET['下载代理']).lower() != 'false' and 'github' in url:
+            url = f'{str(BOT_SET["下载代理"])}/{url}'
+        resp = requests.get(url).text
+        if "#!/usr/bin/env bash" not in resp:
+            await jdbot.edit_message(msg, "【前瞻计划】\n\n下载shell文件失败\n请稍后重试，或尝试关闭代理重启")
             return
-        cmdtext = f"bash {JD_DIR}/bot_beta.sh"
-        fpath = f"{JD_DIR}/bot_beta.sh"
-        with open(fpath, 'w+', encoding='utf-8') as f:
+        with open(f"{JD_DIR}/bot.sh", 'w+', encoding='utf-8') as f:
             f.write(resp)
-        await jdbot.edit_message(msg, "更新过程中程序会重启，请耐心等待")
-        os.system(cmdtext)
+        text = "【前瞻计划】\n\n更新过程中程序会重启，请耐心等待……\n为安全起见，关闭user监控，请使用 /user 手动开启！"
+        await jdbot.edit_message(msg, text)
+        os.system(f"bash {JD_DIR}/bot.sh")
     except exceptions.TimeoutError:
         await jdbot.edit_message(msg, '选择已超时，对话已停止，感谢你的使用')
     except Exception as e:
