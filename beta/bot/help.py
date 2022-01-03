@@ -76,16 +76,24 @@ ver-版本'''
     snode = '/snode 选择脚本并运行'
     chart = '/chart 加数字，统计该账户近期收支情况'
     botset = '''    /set
-        - snode时中英文切换
-        - 每列几个按钮
-        - 是否开启机器人转发
-        - 机器人聊天黑名单
-            - 使用，或者空格等符号进行用户id区隔
-        - 机器人黑名单垃圾话
-            - 加入机器人黑名单后，使用 | 区隔设置垃圾话，会随机挑选垃圾话回复该用户'''
+    - snode时中英文切换
+    - 每列几个按钮
+    - 是否开启机器人转发
+    - 机器人聊天黑名单
+        - 使用，或者空格等符号进行用户id区隔
+    - 机器人黑名单垃圾话
+        - 加入机器人黑名单后，使用 | 区隔设置垃圾话，会随机挑选垃圾话回复该用户'''
     cron = '''    - /cron 命令
     - /cron 加关键字 可进行cron管理'''
-    help_me = {'bean': bean, 'cmd': cmd, 'edit': edit, 'node': node,
-               'getfile': getfile, 'setshort': setshort, 'snode': snode, 'chart': chart, 'mhelp': mhelp, 'set': botset,
-               'cron': cron}
+    help_me = {
+        'bean': bean, 'cmd': cmd,
+        'edit': edit, 'node': node,
+        'getfile': getfile,
+        'setshort': setshort,
+        'snode': snode,
+        'chart': chart,
+        'mhelp': mhelp,
+        'set': botset,
+        'cron': cron
+    }
     await jdbot.send_message(chat_id, help_me[text])
