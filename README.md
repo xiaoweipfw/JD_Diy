@@ -85,8 +85,8 @@ JD_Diy/                     # JD_Diy 仓库
 进入容器中执行以下命令即可
 ```shell
 if [ -d "/jd" ]; then root=/jd; else root=/ql; fi
-mkdir $root/repo/backup
-cp -rf $root/jbot/* $root/repo/backup
+mkdir $root/repo/backup/$(date +\%Y\%m\%d)
+cp -rf $root/jbot/* $root/repo/backup/$(date +\%Y\%m\%d)
 rm -rf $root/jbot/*
 wget https://cdn.jsdelivr.net/gh/chiupam/JD_Diy@master/shell/bot.sh -O $root/bot.sh
 bash $root/bot.sh
